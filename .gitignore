@@ -1,0 +1,17 @@
+# pics
+*.jpg
+*.png
+*.jpeg
+
+# xml
+*.xml
+
+# videos
+*.mp4
+*.wmv
+*.mkv
+
+# files
+*.rar
+*.zip
+*.pyc
