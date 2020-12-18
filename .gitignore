@@ -21,3 +21,8 @@
 # audios
 *.mp3
 *.acc
+
+# models
+*.pb
+*.pth
+*.weights
