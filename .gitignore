@@ -11,18 +11,28 @@
 *.wmv
 *.mkv
 
+# audios
+*.mp3
+*.acc
+
 # files
 *.rar
 *.zip
 *.pyc
 *.txt
 *.iml
-
-# audios
-*.mp3
-*.acc
+*.pdf
+*.dat
+*.json
+*.ogg
+*.html
+*.out
 
 # models
 *.pb
 *.pth
 *.weights
+*.h5
+
+# fonts
+*.TTC

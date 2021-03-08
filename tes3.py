@@ -1,51 +1,61 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
+
+# import pixellib
+# from pixellib.instance import instance_segmentation
+# import time
+#
+# segment_image = instance_segmentation()
+# segment_image.load_model("mask_rcnn_coco.h5")
+# start_time = time.time()
+# segment_image.segmentImage("Snipaste_2021-01-08_11-37-36.jpg", extract_segmented_objects=True,
+#                            save_extracted_objects=True)
+# print(time.time() - start_time)
 import time
 
 import cv2
+import numpy as np
+from pixellib.tune_bg import alter_bg
+import warnings
+warnings.filterwarnings('error')
 
 
-# img1 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-05_09-30-19.jpg')
-# img2 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-05_09-30-29.jpg')
-# img3 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-05_09-30-38.jpg')
+
+change_bg = alter_bg(model_type = "pb")
+change_bg.load_pascalvoc_model("xception_pascalvoc.pb")
+# change_bg.change_bg_img(f_image_path = "Snipaste_2021-01-08_11-37-36.jpg",b_image_path = "Lark20200923-110622.jpeg", output_image_name="new_img.jpg")
+start_time = time.time()
+img = cv2.imread("LNrq0wj73m.png")
+seg_image = change_bg.segmentAsPascalvoc(img, process_frame=True)
+target_class = change_bg.target_obj('person')
+seg_image[1][seg_image[1] != target_class] = 0
+# b_channel, g_channel, r_channel = cv2.split(seg_image[1])
+# alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * 255
+# img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
+# print(img_BGRA)
+# print(img_BGRA.shape)
+# cv2.imwrite('look.png', img_BGRA)
+print(time.time() - start_time)
+
+# import cv2
+# import numpy as np
+# import imutils
 #
-# # 计算图img1的直方图
-# H1 = cv2.calcHist([img1], [1], None, [256], [0, 256])
-# H1 = cv2.normalize(H1, H1, 0, 1, cv2.NORM_MINMAX, -1)  # 对图片进行归一化处理
+# x = cv2.imread('look.png', cv2.IMREAD_UNCHANGED)
+# print(x)
 #
-# H2 = cv2.calcHist([img2], [1], None, [256], [0, 256])
-# H2 = cv2.normalize(H2, H2, 0, 1, cv2.NORM_MINMAX, -1)
 #
-# H3 = cv2.calcHist([img3], [1], None, [256], [0, 256])
-# H3 = cv2.normalize(H3, H3, 0, 1, cv2.NORM_MINMAX, -1)
+# x[np.all(x[:, :, 0:3] == (0, 0, 0), 2)] = 0
 #
-# similarity1 = cv2.compareHist(H1, H2, 0)
-# similarity2 = cv2.compareHist(H1, H3, 0)
-# similarity3 = cv2.compareHist(H2, H3, 0)
+# print(x.shape)
 #
-# print(similarity1, similarity2, similarity3, sep='\n')
-
-
-# 将图片转化为RGB
-def make_regular_image(img, size=(64, 64)):
-    gray_image = img.resize(size).convert('RGB')
-    return gray_image
-
-
-# 计算直方图
-def hist_similar(lh, rh):
-    assert len(lh) == len(rh)
-    hist = sum(1 - (0 if l == r else float(abs(l - r)) / max(l, r)) for l, r in zip(lh, rh)) / len(lh)
-    return hist
-
-
-# 计算相似度
-def calc_similar(li, ri):
-    calc_sim = hist_similar(li.histogram(), ri.histogram())
-    return calc_sim
-
-
-if __name__ == '__main__':
-    start_time = time.time()
-
-    print(time.time() - start_time)
+# y = cv2.imread('Snipaste_2021-01-08_11-37-36.jpg', cv2.IMREAD_UNCHANGED)
+# y_b_channel, y_g_channel, y_r_channel = cv2.split(y)
+# y_alpha_channel = np.ones(y_b_channel.shape, dtype=y_b_channel.dtype) * 255
+# y_BGRA = cv2.merge((y_b_channel, y_g_channel, y_r_channel, y_alpha_channel))
+# y = cv2.resize(y_BGRA, (x.shape[1], x.shape[0]))
+# z = cv2.bitwise_and(x, y)
+# print(z.shape)
+# cv2.imwrite('z.png', z)
+# cv2.imshow('img', z)
+# cv2.waitKey(-1)
