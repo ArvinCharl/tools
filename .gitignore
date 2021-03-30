@@ -36,3 +36,7 @@
 
 # fonts
 *.TTC
+
+# frontend
+static
+templates

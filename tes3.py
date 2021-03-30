@@ -2,33 +2,30 @@
 # -*- coding: utf-8 -*-
 
 # import pixellib
-# from pixellib.instance import instance_segmentation
-# import time
-#
-# segment_image = instance_segmentation()
-# segment_image.load_model("mask_rcnn_coco.h5")
-# start_time = time.time()
-# segment_image.segmentImage("Snipaste_2021-01-08_11-37-36.jpg", extract_segmented_objects=True,
-#                            save_extracted_objects=True)
+from pixellib.instance import instance_segmentation
+import time
+
+segment_image = instance_segmentation()
+segment_image.load_model("mask_rcnn_coco.h5")
+start_time = time.time()
+segment_image.segmentImage("Snipaste_2021-01-08_11-37-36.jpg", extract_segmented_objects=True,
+                           save_extracted_objects=True)
 # print(time.time() - start_time)
 import time
 
 import cv2
 import numpy as np
 from pixellib.tune_bg import alter_bg
-import warnings
-warnings.filterwarnings('error')
 
-
-
-change_bg = alter_bg(model_type = "pb")
-change_bg.load_pascalvoc_model("xception_pascalvoc.pb")
+change_bg = alter_bg(model_type="pb")
+change_bg.load_pascalvoc_model("mask_person/xception_pascalvoc.pb")
 # change_bg.change_bg_img(f_image_path = "Snipaste_2021-01-08_11-37-36.jpg",b_image_path = "Lark20200923-110622.jpeg", output_image_name="new_img.jpg")
 start_time = time.time()
-img = cv2.imread("LNrq0wj73m.png")
+img = cv2.imread("Snipaste_2021-01-08_11-37-36.jpg")
 seg_image = change_bg.segmentAsPascalvoc(img, process_frame=True)
-target_class = change_bg.target_obj('person')
-seg_image[1][seg_image[1] != target_class] = 0
+print(seg_image[0])
+# target_class = change_bg.target_obj('person')
+# seg_image[1][seg_image[1] != target_class] = 0
 # b_channel, g_channel, r_channel = cv2.split(seg_image[1])
 # alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * 255
 # img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))

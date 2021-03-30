@@ -75,19 +75,23 @@ class DetectionPeople:
 
                 # print('%s: %f' % (cls_name, cls_conf))
         finish = time.time()
-        print('Predicted in %f seconds.' % (finish - start))
+        # print('Predicted in %f seconds.' % (finish - start))
+        print('-' * 200)
         print(result)
         return result
 
 
-def main(videofile, savefile, ini_threshold=0.97):
+def main(videofile, savefile, positive_ini_threshold=0.97, negative_ini_threshold=0.97):
     video_capture = cv2.VideoCapture(videofile)
     FPS = video_capture.get(cv2.CAP_PROP_FPS)
     print('FPS: ', FPS)
     counting = 0
-    num_score = 0
-    totol_score = 0
-    the_compare_img = video_capture.read()[1]
+    negative_num_score = 0
+    positive_num_score = 0
+    negative_totol_score = 0
+    positive_totol_score = 0
+    negative_compare_img = video_capture.read()[1]
+    positive_compare_img = video_capture.read()[1]
     # os.system('-1')
     while True:
         success, frame = video_capture.read()
@@ -101,29 +105,73 @@ def main(videofile, savefile, ini_threshold=0.97):
         if counting % int(FPS) == 0:
             results_p = P.rec_people(frame)
 
-            for result in results_p:
-                if 'person' not in result.keys():
-                    continue
-                else:
-                    compare_score = compare_image(the_compare_img, frame)
-                    totol_score += compare_score
-                    num_score += 1
+            if results_p:
+                for result in results_p:
+                    if 'person' not in result.keys():
+                        negative_compare_score = compare_image(negative_compare_img, frame)
+                        negative_totol_score += negative_compare_score
+                        negative_num_score += 1
 
-                    dynamic_thresh = (int(
-                        locals().get('avg_score') * 100)) / 100 if 'avg_score' in locals().keys() else ini_threshold
-                    print('当前动态阈值: {}'.format(dynamic_thresh))
+                        negative_dynamic_thresh = (int(
+                            locals().get(
+                                'negative_avg_score') * 100)) / 100 if 'negative_avg_score' in locals().keys() else negative_ini_threshold
+                        print('当前负样本动态阈值: {}'.format(negative_dynamic_thresh))
 
-                    if compare_score < dynamic_thresh:
-                        out_path = os.path.join(
-                            savefile, 'kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
-                        if not os.path.exists(savefile):
-                            os.makedirs(savefile)
-                        cv2.imwrite(out_path, frame)
-                        print('已保存: {}'.format(out_path))
-                        the_compare_img = frame
+                        if negative_compare_score < negative_dynamic_thresh:
+                            out_path = os.path.join(
+                                savefile, 'negative_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                            if not os.path.exists(savefile):
+                                os.makedirs(savefile)
+                            cv2.imwrite(out_path, frame)
+                            print('已保存负样本: {}'.format(out_path))
+                            negative_compare_img = frame
+                        else:
+                            negative_avg_score = negative_totol_score / negative_num_score
+                            # print('当前负样本平均阈值: {}'.format(negative_avg_score))
+                        break
                     else:
-                        avg_score = totol_score / num_score
-                        # print('当前平均阈值: {}'.format(avg_score))
+                        positive_compare_score = compare_image(positive_compare_img, frame)
+                        positive_totol_score += positive_compare_score
+                        positive_num_score += 1
+
+                        positive_dynamic_thresh = (int(
+                            locals().get(
+                                'positive_avg_score') * 100)) / 100 if 'positive_avg_score' in locals().keys() else positive_ini_threshold
+                        print('当前正样本动态阈值: {}'.format(positive_dynamic_thresh))
+
+                        if positive_compare_score < positive_dynamic_thresh:
+                            out_path = os.path.join(
+                                savefile, 'positive_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                            if not os.path.exists(savefile):
+                                os.makedirs(savefile)
+                            cv2.imwrite(out_path, frame)
+                            print('已保存正样本: {}'.format(out_path))
+                            positive_compare_img = frame
+                        else:
+                            positive_avg_score = positive_totol_score / positive_num_score
+                            # print('当前正样本平均阈值: {}'.format(positive_avg_score))
+                        break
+            else:
+                negative_compare_score = compare_image(negative_compare_img, frame)
+                negative_totol_score += negative_compare_score
+                negative_num_score += 1
+
+                negative_dynamic_thresh = (int(
+                    locals().get(
+                        'negative_avg_score') * 100)) / 100 if 'negative_avg_score' in locals().keys() else negative_ini_threshold
+                print('当前负样本动态阈值: {}'.format(negative_dynamic_thresh))
+
+                if negative_compare_score < negative_dynamic_thresh:
+                    out_path = os.path.join(
+                        savefile, 'negative_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                    if not os.path.exists(savefile):
+                        os.makedirs(savefile)
+                    cv2.imwrite(out_path, frame)
+                    print('已保存负样本: {}'.format(out_path))
+                    negative_compare_img = frame
+                else:
+                    negative_avg_score = negative_totol_score / negative_num_score
+                    # print('当前负样本平均阈值: {}'.format(negative_avg_score))
 
     video_capture.release()
 
@@ -138,8 +186,8 @@ if __name__ == '__main__':
     #         print(1)
 
     P = DetectionPeople('yolov4-tiny.cfg', 'yolov4-tiny.pth')
-    for root, dirs, files in os.walk(r'E:\c海势工作资料\智慧工地素材\baoshan_kitchen'):
+    for root, dirs, files in os.walk(r'E:\c海势工作资料\智慧工地素材\baoshan20210322'):
         for file in files:
             each_file = os.path.join(root, file)
             print(each_file)
-            main(each_file, r'E:\c_data\baoshan_kitchen')
+            main(each_file, r'E:\c_data\baoshan_kitchen\baoshan20210322')
