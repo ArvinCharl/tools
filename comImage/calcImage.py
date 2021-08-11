@@ -7,9 +7,10 @@
 # import matplotlib.pyplot as plt
 import cv2
 
-img1 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-05_09-30-19.jpg')
-img2 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-05_09-30-29.jpg')
-img3 = cv2.imread(r'D:\Desktop\smi_imgs\Snipaste_2021-01-04_17-35-59.jpg')
+img1 = cv2.imread(r'D:\Desktop\Snipaste_2021-07-02_18-17-22.jpg')
+img2 = cv2.imread(r'D:\Desktop\Snipaste_2021-07-02_18-17-36.jpg')
+img3 = cv2.imread(r'D:\Desktop\Snipaste_2021-07-02_18-17-43.jpg')
+img4 = cv2.imread(r'D:\Desktop\Snipaste_2021-07-02_18-17-51.jpg')
 
 # 计算图img1的直方图
 H1 = cv2.calcHist([img1], [1], None, [256], [0, 256])
@@ -23,13 +24,19 @@ H2 = cv2.normalize(H2, H2, 0, 1, cv2.NORM_MINMAX, -1)
 H3 = cv2.calcHist([img3], [1], None, [256], [0, 256])
 H3 = cv2.normalize(H3, H3, 0, 1, cv2.NORM_MINMAX, -1)
 
+# 计算图img3的直方图
+H4 = cv2.calcHist([img4], [1], None, [256], [0, 256])
+H4 = cv2.normalize(H4, H4, 0, 1, cv2.NORM_MINMAX, -1)
+
 # 利用compareHist（）进行比较相似度
-similarity1 = cv2.compareHist(H1, H1, 0)
-similarity2 = cv2.compareHist(H1, H3, 0)
-similarity3 = cv2.compareHist(H2, H3, 0)
+similarity1 = cv2.compareHist(H1, H2, 0)
+similarity2 = cv2.compareHist(H3, H4, 0)
+similarity3 = cv2.compareHist(H1, H3, 0)
+similarity4 = cv2.compareHist(H1, H4, 0)
 print("img1和img2的相似度：", similarity1)
-print("img1和img3的相似度：", similarity2)
-print("img2和img3的相似度：", similarity3)
+print("img3和img4的相似度：", similarity2)
+print("img1和img3的相似度：", similarity3)
+print("img1和img4的相似度：", similarity4)
 
 # img和img1直方图展示
 # plt.subplot(2, 1, 1)

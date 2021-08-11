@@ -67,6 +67,7 @@ def process_pic(img):
     b_channel, g_channel, r_channel = cv2.split(seg_image[1])
     alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * 255
     img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
+    print(img_BGRA.shape)
 
     # 黑色部分透明
     img_BGRA[np.all(img_BGRA[:, :, 0:3] == (0, 0, 0), 2)] = 0

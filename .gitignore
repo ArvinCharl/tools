@@ -27,6 +27,9 @@
 *.ogg
 *.html
 *.out
+*.caj
+*.whl
+*.exe
 
 # models
 *.pb
@@ -40,3 +43,8 @@
 # frontend
 static
 templates
+
+# others
+*.cc
+*.h
+*.dll

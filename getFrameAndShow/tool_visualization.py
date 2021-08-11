@@ -13,10 +13,10 @@ import cv2
 
 
 def draw_bounding_box_on_image_array(image,
-                                     ymin,
                                      xmin,
-                                     ymax,
+                                     ymin,
                                      xmax,
+                                     ymax,
                                      color=(144, 222, 150),
                                      thickness=2,
                                      display_str_list=(),
@@ -38,17 +38,22 @@ def draw_bounding_box_on_image_array(image,
         coordinates as absolute.
     """
     image_pil = Image.fromarray(np.uint8(image)).convert('RGB')
-    draw_bounding_box_on_image(image_pil, ymin, xmin, ymax, xmax, color,
+    draw_bounding_box_on_image(image_pil,
+                               xmin,
+                               ymin,
+                               xmax,
+                               ymax,
+                               color,
                                thickness, display_str_list,
                                use_normalized_coordinates)
     np.copyto(image, np.array(image_pil))
 
 
 def draw_bounding_box_on_image(image,
-                               ymin,
                                xmin,
-                               ymax,
+                               ymin,
                                xmax,
+                               ymax,
                                color='green',
                                thickness=2,
                                display_str_list=(),

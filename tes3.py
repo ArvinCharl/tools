@@ -1,58 +1,40 @@
 #!/user/bin/env python3
 # -*- coding: utf-8 -*-
-
-# import pixellib
-from pixellib.instance import instance_segmentation
+import argparse
 import time
+import traceback
 
-segment_image = instance_segmentation()
-segment_image.load_model("mask_rcnn_coco.h5")
-start_time = time.time()
-segment_image.segmentImage("Snipaste_2021-01-08_11-37-36.jpg", extract_segmented_objects=True,
-                           save_extracted_objects=True)
-# print(time.time() - start_time)
-import time
+"""
+rtsp://61.151.156.6:8554/cam/realmonitor?vcuid=fMcmuLZbB1CRSOMNR1645L&subtype=0&urlType=agentPull&manufacturer=HIKVISION&protocoltype=HIKVISION&streamType=0&token=1625534463_89950bac450931f96b81872617d4fd5fb7afc103&mapNet=ExtNet
+"""
+"""
+python tes3.py --accessToken 'accessToken' --token 'testoken' --algorithmInstanceId '00001' --videoURL "http://001.com" "http://002.com" "http://003.com" --cameraId "PJ003" "PJ004" "PJ005" --postDataURL "https://tes111.com"
+"""
 
-import cv2
-import numpy as np
-from pixellib.tune_bg import alter_bg
+while True:
+    try:
+        parser = argparse.ArgumentParser(description='启停接口')
+        parser.add_argument('--accessToken', required=True)
+        parser.add_argument('--token', required=True)
+        parser.add_argument('--algorithmInstanceId', required=True)
+        parser.add_argument('--videoURL', nargs='+', required=True)
+        parser.add_argument('--cameraId', nargs='+', required=True)
+        parser.add_argument('--postDataURL', required=True)
+        parser.add_argument('--algorithmParas', nargs='+')
+        parser.add_argument('--extensionData', nargs='+')
 
-change_bg = alter_bg(model_type="pb")
-change_bg.load_pascalvoc_model("mask_person/xception_pascalvoc.pb")
-# change_bg.change_bg_img(f_image_path = "Snipaste_2021-01-08_11-37-36.jpg",b_image_path = "Lark20200923-110622.jpeg", output_image_name="new_img.jpg")
-start_time = time.time()
-img = cv2.imread("Snipaste_2021-01-08_11-37-36.jpg")
-seg_image = change_bg.segmentAsPascalvoc(img, process_frame=True)
-print(seg_image[0])
-# target_class = change_bg.target_obj('person')
-# seg_image[1][seg_image[1] != target_class] = 0
-# b_channel, g_channel, r_channel = cv2.split(seg_image[1])
-# alpha_channel = np.ones(b_channel.shape, dtype=b_channel.dtype) * 255
-# img_BGRA = cv2.merge((b_channel, g_channel, r_channel, alpha_channel))
-# print(img_BGRA)
-# print(img_BGRA.shape)
-# cv2.imwrite('look.png', img_BGRA)
-print(time.time() - start_time)
+        args = parser.parse_args()
+        print(f'accessToken: {args.accessToken}')
+        print(f'token: {args.token}')
+        print(f'algorithmInstanceId: {args.algorithmInstanceId}')
+        print(f'videoURL: {args.videoURL}')
+        print(f'cameraId: {args.cameraId}')
+        print(f'postDataURL: {args.postDataURL}')
+        print(f'algorithmParas: {args.algorithmParas}')
+        print(f'extensionData: {args.extensionData}')
+        print('-' * 200, '\n')
 
-# import cv2
-# import numpy as np
-# import imutils
-#
-# x = cv2.imread('look.png', cv2.IMREAD_UNCHANGED)
-# print(x)
-#
-#
-# x[np.all(x[:, :, 0:3] == (0, 0, 0), 2)] = 0
-#
-# print(x.shape)
-#
-# y = cv2.imread('Snipaste_2021-01-08_11-37-36.jpg', cv2.IMREAD_UNCHANGED)
-# y_b_channel, y_g_channel, y_r_channel = cv2.split(y)
-# y_alpha_channel = np.ones(y_b_channel.shape, dtype=y_b_channel.dtype) * 255
-# y_BGRA = cv2.merge((y_b_channel, y_g_channel, y_r_channel, y_alpha_channel))
-# y = cv2.resize(y_BGRA, (x.shape[1], x.shape[0]))
-# z = cv2.bitwise_and(x, y)
-# print(z.shape)
-# cv2.imwrite('z.png', z)
-# cv2.imshow('img', z)
-# cv2.waitKey(-1)
+        time.sleep(10)
+    except:
+        traceback.print_exc()
+

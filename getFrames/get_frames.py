@@ -119,7 +119,7 @@ def main(videofile, savefile, positive_ini_threshold=0.97, negative_ini_threshol
 
                         if negative_compare_score < negative_dynamic_thresh:
                             out_path = os.path.join(
-                                savefile, 'negative_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                                savefile, 'negative_ciga_{}.jpg'.format(str(time.time()).replace('.', '_')))
                             if not os.path.exists(savefile):
                                 os.makedirs(savefile)
                             cv2.imwrite(out_path, frame)
@@ -141,7 +141,7 @@ def main(videofile, savefile, positive_ini_threshold=0.97, negative_ini_threshol
 
                         if positive_compare_score < positive_dynamic_thresh:
                             out_path = os.path.join(
-                                savefile, 'positive_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                                savefile, 'positive_ciga_{}.jpg'.format(str(time.time()).replace('.', '_')))
                             if not os.path.exists(savefile):
                                 os.makedirs(savefile)
                             cv2.imwrite(out_path, frame)
@@ -163,7 +163,7 @@ def main(videofile, savefile, positive_ini_threshold=0.97, negative_ini_threshol
 
                 if negative_compare_score < negative_dynamic_thresh:
                     out_path = os.path.join(
-                        savefile, 'negative_kitchen_{}.jpg'.format(str(time.time()).replace('.', '_')))
+                        savefile, 'negative_fire_{}.jpg'.format(str(time.time()).replace('.', '_')))
                     if not os.path.exists(savefile):
                         os.makedirs(savefile)
                     cv2.imwrite(out_path, frame)
@@ -186,8 +186,8 @@ if __name__ == '__main__':
     #         print(1)
 
     P = DetectionPeople('yolov4-tiny.cfg', 'yolov4-tiny.pth')
-    for root, dirs, files in os.walk(r'E:\c海势工作资料\智慧工地素材\baoshan20210322'):
+    for root, dirs, files in os.walk(r'E:\c海势工作资料\智慧工地素材\ciga02'):
         for file in files:
             each_file = os.path.join(root, file)
             print(each_file)
-            main(each_file, r'E:\c_data\baoshan_kitchen\baoshan20210322')
+            main(each_file, r'E:\c_data\jg\ciga\ciga_positive')
