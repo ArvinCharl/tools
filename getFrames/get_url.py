@@ -2,7 +2,6 @@ import json
 import hashlib
 import traceback
 
-import imutils
 import requests
 
 requests.packages.urllib3.disable_warnings()
@@ -12,12 +11,8 @@ def get_camera_url(channel_id):
     rtspurl = ''
     # username_value = 'zhangqiubin'
     # passwd_value = 'Nihao123@'
-    # username_value = 'tyspjk'
-    # passwd_value = 'Tysp1357-'
-    username_value = 'zybg1234'
-    passwd_value = 'Zqqqy1357'
-    # username_value = 'njdljd'
-    # passwd_value = 'Ict327@2020'
+    username_value = 'tyspjk'
+    passwd_value = 'Tysp1357-'
     # s = requests.session()
     ip_port = '61.151.156.1:8282'  # 外网地址
     # ip_port = '10.200.1.71:8320'        # 内网地址
@@ -45,11 +40,41 @@ def get_camera_url(channel_id):
         token = json.loads(r.text)['token']
         headers2 = {"Content-Type": "application/json;charset=UTF-8", "User-Agent": "winpc", "X-Subject-Token": token}
 
+        # 获取分级组织
+        # r = requests.get(
+        #     "https://" + ip_port + "/videoService/devicesManager/deviceTree?id=&nodeType=1&typeCode=01",
+        #     headers=headers2, timeout=10, verify=False)
+        # print('获取分级组织: ', r.text)
+
+
+        # # 获取通道信息
+        # r = requests.get(
+        #     "https://" + ip_port + "/videoService/devicesManager/deviceTree?id={}&nodeType=1&typeCode=01;1;ALL;ALL&page=1&pageSize=1000".format(
+        #         id),
+        #     headers=headers2, timeout=10, verify=False)
+        # print('通道信息: ', r.text)
+
+        # # 获取分级组织
+        # r = requests.get(
+        #     "https://" + ip_port + "/videoService/devicesManager/deviceTree?id=S4NbecfYB1BUD95HV6KTFO&nodeType=1&typeCode=01",
+        #     headers=headers2, timeout=10, verify=False)
+        # print('获取设备测试分级组织: ', r.text)
+        #
+        # id = json.loads(r.text)[1]['id']
+        # # id = 'S4NbecfYB1CCSPHPTMVUN4'
+        #
+        # # 获取通道信息
+        # r = requests.get(
+        #     "https://" + ip_port + "/videoService/devicesManager/deviceTree?id={}&nodeType=1&typeCode=01;1;ALL;ALL&page=1&pageSize=1000".format(
+        #         id),
+        #     headers=headers2, timeout=10, verify=False)
+        # print('通道信息: ', r.text)
+
         # 第三次请求获取rtspurl
         r = requests.get("https://" + ip_port + "/videoService/realmonitor/uri?channelId=" + channel_id,
                          headers=headers2, timeout=10, verify=False)
         rtspurl += json.loads(r.text)['url']
-    except Exception:
+    except Exception as e:
         print('request error: ', traceback.print_exc())
         print('rtspurl: ', rtspurl)
         return rtspurl
@@ -71,13 +96,7 @@ def get_camera_url(channel_id):
 if __name__ == '__main__':
     # channel_ids = ['fMcmuLZbB1CRSOMNR07JF1', 'fMcmuLZbB1CRSOMNR1645L', 'fMcmuLZbB1CRSOMNQV9228']
     # channel_ids = ['fMcmuLZbB1CRSOMNQV9285']
-    # channel_ids = ['oLkDZT4BA1CIOTV0V99NKE']
-    channel_ids = [
-        # 'fMcmuLZbB1D01PFSBANNBJ',
-        'fMcmuLZbB1D01PFSBDJBVP',
-        'fMcmuLZbB1D01PFSBDJCC0',
-        'fMcmuLZbB1D01PFSBEHT5L'
-    ]  # 中冶1234号
+    channel_ids = ['oLkDZT4BA1CIOTV0V99NKE']
     # channel_ids = ['xz46DizuB1CIOTV1C1S7U1', 'xz46DizuB1CIOTV1C1S81L', 'xz46DizuB1CIOTV1C1S86H']
     # channel_ids = ['xz46DizuB1CIOTV1C1S7U1']
     for channel_id in channel_ids:

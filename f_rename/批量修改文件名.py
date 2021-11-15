@@ -1,7 +1,7 @@
 import os
 import time
 
-path = r'E:\c_data\jg\no_helmet-helmet\ori-ciga\2'
+path = r'E:\c_data\jg\fire\new_neg'
 
 # 获取该目录下所有文件，存入列表中
 fileList = os.listdir(path)
@@ -16,9 +16,10 @@ for i in fileList:
     # print(f'oldname: {oldname}')
     # print(f'old_xml_name: {old_xml_name}')
     # if i.split('_')[0] == '徐汇南部医疗施工区2':
-    newname = path + os.sep + 'hel-nohel_' + str(n) + '_' + str(time.time()).replace('.', '_') + '.' + i.split('.')[-1]
+    # newname = path + os.sep + 'hel-nohel_' + str(n) + '_' + str(time.time()).replace('.', '_') + '.' + i.split('.')[-1]
     # new_xml_name = path + os.sep + 'web_' + i.split('.')[0] + '.xml'
-    # newname = path + os.sep + 'negative_' + '_'.join(i.split('_')[1:])
+    # newname = path + os.sep + 'negative_' + '_'.join(i.split('-')[1:])
+    newname = path + os.sep + 'negative_' + i
     # print(f'newname: {newname}')
     # print(f'new_xml_name: {new_xml_name}')
     os.rename(oldname, newname)  # 用os模块中的rename方法对文件改名

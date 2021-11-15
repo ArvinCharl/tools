@@ -4,6 +4,36 @@ import numpy as np
 from flask import request
 
 
+def base64_to_image(base64_code):
+    """
+    输入的base64解码，还原为numpy类型
+    """
+    # base64解码
+    img_data = base64.b64decode(base64_code)
+    # 转换为np数组
+    img_array = np.fromstring(img_data, np.uint8)
+    # 转换成opencv可用格式
+    img = cv2.imdecode(img_array, cv2.COLOR_RGB2BGR)
+    return img
+
+
+def image_to_base64(image_np):
+    """
+    把输入图片按base64编码
+    """
+    image = cv2.imencode('.jpg', image_np)[1]
+    image_code = base64.b64encode(image).decode()
+
+    return image_code
+
+
+def GlobalToBase64(file):
+    with open(file, 'rb') as fileObj:
+        image_data = fileObj.read()
+        base64_data = base64.b64encode(image_data)
+        return base64_data
+
+
 def base64_to_file(input_base64_file, out_ori_file):
     with open(input_base64_file, 'r') as f:
         base64_data = f.read()
@@ -19,6 +49,8 @@ def file_to_base64(infile, outfile):
         with open(outfile, 'wb') as f:
             f.write(base64_data)
         return base64_data
+
+
 #
 #
 # with open('no_mask.mp4', 'rb') as fileObj:    # 视频, 音频文件从base64读取后, 似乎只能先写成文件, 再读才可使用
@@ -45,5 +77,9 @@ def file_to_base64(infile, outfile):
 
 
 if __name__ == '__main__':
-    file_to_base64(r'llll.jpg', 'need_mask.txt')
+    file_to_base64(r'tt_paddleocr/Lark20200923-110618.jpeg', 'tt_paddleocr/test.txt')
     # base64_to_file('result_pic_base64.txt', 'lllll.png')
+    # import cv2
+    # img = cv2.imread('llll.jpg')
+    # out = image_to_base64(img)
+    # print(out)

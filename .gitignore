@@ -2,9 +2,7 @@
 *.jpg
 *.png
 *.jpeg
-
-# xml
-*.xml
+*.tif
 
 # videos
 *.mp4
@@ -14,12 +12,12 @@
 # audios
 *.mp3
 *.acc
+*.wav
 
 # files
 *.rar
 *.zip
 *.pyc
-*.txt
 *.iml
 *.pdf
 *.dat
@@ -30,6 +28,13 @@
 *.caj
 *.whl
 *.exe
+*.scp
+# conf
+*.conf
+*.xml
+*.log
+*.txt
+*.ipynb
 
 # models
 *.pb
@@ -43,8 +48,12 @@
 # frontend
 static
 templates
+build
+fc_base
+.idea
 
 # others
 *.cc
 *.h
 *.dll
+

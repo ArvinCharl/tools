@@ -54,7 +54,7 @@ def make_xml(xml_data):
     root.appendChild(object)
     name = doc.createElement('name')
     name.appendChild(doc.createTextNode('{}'.format(xml_data.get('xml_cls_name'))))
-    pose = doc.createElement('pose')
+    pose = doc.createElement('human_pose')
     pose.appendChild(doc.createTextNode('Unspecified'))
     truncated = doc.createElement('truncated')
     truncated.appendChild(doc.createTextNode('0'))
